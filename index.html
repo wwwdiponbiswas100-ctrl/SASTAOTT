@@ -3,8 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sasta OTT - YouTube Premium Deal</title>
+  <title>Sasta OTT - Premium Subscriptions</title>
+  <!-- Three.js Library for 3D Waving Flag Effect -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
   <style>
+    :root {
+      --bg-color: #0d0e12;
+      --card-bg: #16181f;
+      --card-border: #262933;
+      --accent-red: #ff3b30;
+      --accent-green: #25d366;
+      --text-main: #ffffff;
+      --text-muted: #8e8e93;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -13,102 +26,488 @@
     }
 
     body {
-      background-color: #0f0f10;
-      color: #ffffff;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding: 20px 10px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ==========================================
+       3-SECOND 3D INTRO / LOADING SCREEN STYLES
+       ========================================== */
+    #loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      padding: 20px;
+      background-color: #050508;
+      transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+      pointer-events: none;
     }
 
-    .card {
-      background: #18181c;
-      border: 1px solid #2a2a30;
-      border-radius: 16px;
-      padding: 28px;
-      max-width: 420px;
+    #flag-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      height: 100%;
+      z-index: 1;
+      opacity: 0.65;
     }
 
-    .brand {
+    .loader-content {
+      position: relative;
+      z-index: 2;
       text-align: center;
-      margin-bottom: 20px;
+      padding: 20px;
+      perspective: 1000px;
     }
 
-    .brand h1 {
-      font-size: 24px;
-      color: #ff3b30;
+    /* 3D Branding Title */
+    .brand-3d {
+      font-size: 52px;
+      font-weight: 900;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transform: rotateX(15deg) rotateY(-5deg);
+      text-shadow: 
+        0 1px 0 #ccc,
+        0 2px 0 #c9c9c9,
+        0 3px 0 #bbb,
+        0 4px 0 #b9b9b9,
+        0 5px 0 #aaa,
+        0 6px 1px rgba(0,0,0,.1),
+        0 0 5px rgba(0,0,0,.1),
+        0 1px 3px rgba(0,0,0,.3),
+        0 3px 5px rgba(0,0,0,.2),
+        0 5px 10px rgba(0,0,0,.25),
+        0 10px 20px rgba(255, 59, 48, 0.4);
+      animation: float3D 3s ease-in-out infinite alternate;
+    }
+
+    .brand-3d span {
+      color: var(--accent-red);
+    }
+
+    .loader-tagline {
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-top: 15px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      letter-spacing: 0.5px;
+    }
+
+    .loader-footer {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .made-in-india {
+      font-size: 13px;
+      font-weight: 700;
+      color: #34c759;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(52, 199, 89, 0.3);
+      backdrop-filter: blur(5px);
+    }
+
+    .initiative-tag {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #ff9933;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    @keyframes float3D {
+      0% {
+        transform: rotateX(12deg) rotateY(-6deg) translateY(0px);
+      }
+      100% {
+        transform: rotateX(20deg) rotateY(6deg) translateY(-10px);
+      }
+    }
+
+    /* ==========================================
+       MAIN WEBSITE STYLES
+       ========================================== */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* Header & Hero Section */
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .brand-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--accent-red);
       letter-spacing: -0.5px;
     }
 
-    .brand p {
-      font-size: 13px;
-      color: #8e8e93;
+    /* Aesthetic Glowing & Shining Badge */
+    .trust-badge-wrapper {
+      margin-top: 10px;
+      display: inline-block;
     }
 
-    .plan-box {
-      background: #222228;
-      border: 1px solid #33333c;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-
-    .plan-title {
-      font-weight: 600;
-      font-size: 16px;
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
+    .trust-badge {
+      display: inline-flex;
       align-items: center;
-    }
-
-    .badge {
-      background: #ff3b30;
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-weight: bold;
-    }
-
-    .price {
-      font-size: 28px;
-      font-weight: bold;
+      gap: 8px;
+      background: linear-gradient(135deg, rgba(37, 211, 102, 0.15), rgba(37, 211, 102, 0.05));
+      border: 1px solid rgba(37, 211, 102, 0.5);
       color: #34c759;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 6px 16px;
+      border-radius: 30px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(37, 211, 102, 0.25);
+      animation: pulseGlow 2.5s infinite ease-in-out;
+    }
+
+    .trust-badge .dot {
+      height: 8px;
+      width: 8px;
+      background-color: var(--accent-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: blink 1.5s infinite alternate;
+    }
+
+    .trust-badge::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(
+        60deg, 
+        rgba(255, 255, 255, 0) 0%, 
+        rgba(255, 255, 255, 0.6) 50%, 
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: rotate(25deg);
+      animation: shineSweep 3.5s infinite ease-in-out;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 12px rgba(37, 211, 102, 0.2);
+        border-color: rgba(37, 211, 102, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 22px rgba(37, 211, 102, 0.45);
+        border-color: rgba(37, 211, 102, 0.8);
+      }
+    }
+
+    @keyframes blink {
+      from { opacity: 0.4; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1.1); }
+    }
+
+    @keyframes shineSweep {
+      0% { left: -60%; }
+      20% { left: 140%; }
+      100% { left: 140%; }
+    }
+
+    .hero-title {
+      font-size: 26px;
+      margin: 15px 0 8px;
+    }
+
+    .hero-sub {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* Plans Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .plan-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Dynamic Graphic Banner */
+    .card-banner {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card-banner.youtube {
+      background: linear-gradient(135deg, #1f0000 0%, #3d0000 100%);
+    }
+
+    .card-banner.hotstar {
+      background: linear-gradient(100deg, #027bfd 0%, #7d15cc 70%, #990099 100%);
+    }
+    
+    .hotstar-logo-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .hotstar-star {
+      font-size: 32px;
+      line-height: 1;
+      color: #e2e8f0;
+      transform: rotate(12deg);
+      display: inline-block;
+    }
+
+    .card-banner.netflix {
+      background: linear-gradient(135deg, #2b0000 0%, #000000 100%);
+    }
+
+    .card-banner.hoichoi {
+      background: linear-gradient(180deg, #d31e25 0%, #900a0f 60%, #4a0004 100%);
+    }
+
+    .hoichoi-logo-text {
+      color: #ffffff;
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .card-banner.spotify {
+      background: linear-gradient(135deg, #00220d 0%, #001200 100%);
+    }
+
+    .logo-img {
+      max-height: 55px;
+      max-width: 75%;
+      object-fit: contain;
+    }
+
+    .purchased-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .save-tag {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--accent-red);
+      font-size: 10px;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 12px;
+    }
+
+    .card-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .plan-name {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .plan-desc {
+      font-size: 12px;
+      color: var(--text-muted);
       margin-bottom: 12px;
     }
 
-    .features {
+    .features-list {
       list-style: none;
-      font-size: 13px;
+      font-size: 12px;
       color: #c7c7cc;
+      margin-bottom: 16px;
+      flex-grow: 1;
     }
 
-    .features li {
-      margin-bottom: 6px;
+    .features-list li {
+      margin-bottom: 4px;
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
+    .badges-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .micro-badge {
+      font-size: 10px;
+      background: #222530;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #aaa;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .current-price {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--accent-green);
+    }
+
+    .mrp {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+
+    .period {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .select-btn {
+      width: 100%;
+      background: var(--accent-red);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .select-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* Checkout Modal / Payment Page Popup */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      padding: 15px;
+    }
+
+    .modal-card {
+      background: #18181c;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 400px;
+      width: 100%;
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .modal-header {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .selected-summary {
+      background: #222228;
+      border: 1px solid #33333c;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     .input-group {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     .input-group label {
       display: block;
-      font-size: 12px;
-      color: #aeae8b;
-      margin-bottom: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
     .input-group input {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       border-radius: 8px;
       border: 1px solid #3a3a42;
       background: #0f0f10;
@@ -118,119 +517,408 @@
     }
 
     .input-group input:focus {
-      border-color: #ff3b30;
+      border-color: var(--accent-red);
     }
 
     .qr-container {
       text-align: center;
       background: #ffffff;
-      padding: 16px;
+      padding: 12px;
       border-radius: 12px;
-      margin: 20px 0;
+      margin: 16px 0;
     }
 
     .qr-container img {
-      width: 180px;
-      height: 180px;
+      width: 160px;
+      height: 160px;
     }
 
     .qr-container p {
       color: #1c1c1e;
       font-weight: 600;
-      font-size: 13px;
-      margin-top: 8px;
+      font-size: 12px;
+      margin-top: 6px;
     }
 
-    .btn {
+    .wa-btn {
       width: 100%;
-      background: #25d366;
+      background: var(--accent-green);
       color: #ffffff;
       border: none;
-      padding: 14px;
+      padding: 12px;
       border-radius: 8px;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 8px;
-      transition: background 0.2s;
     }
 
-    .btn:hover {
+    .wa-btn:hover {
       background: #1ebc57;
     }
 
-    .note {
+    .footer-note {
       text-align: center;
       font-size: 11px;
-      color: #8e8e93;
-      margin-top: 12px;
+      color: var(--text-muted);
+      margin-top: 8px;
     }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    <div class="brand">
-      <h1>SASTA OTT</h1>
-      <p>Premium Digital Subscriptions at Best Rates</p>
+  <!-- 3D INTRO / LOADING SCREEN OVERLAY -->
+  <div id="loader-overlay">
+    <canvas id="flag-canvas"></canvas>
+    
+    <div class="loader-content">
+      <div class="brand-3d">SASTA <span>OTT</span></div>
+      <div class="loader-tagline">Why pay more when Sasta OTT is here!</div>
+      
+      <div class="loader-footer">
+        <div class="made-in-india">Made with ❤️ in India</div>
+        <div class="initiative-tag">A D. BISWAS INITIATIVE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN WEBSITE CONTENT -->
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="brand-title">SASTA OTT</div>
+      
+      <!-- Shining & Glowing Badge -->
+      <div class="trust-badge-wrapper">
+        <div class="trust-badge">
+          <span class="dot"></span>
+          TRUSTED BY 100+ INDIANS
+        </div>
+      </div>
+
+      <h1 class="hero-title">Premium Subscriptions. Affordable Rates.</h1>
+      <p class="hero-sub">Instant delivery & setup support via WhatsApp</p>
     </div>
 
-    <div class="plan-box">
-      <div class="plan-title">
-        YT Premium + Music <span class="badge">SAVE 80%</span>
+    <!-- Plans Grid -->
+    <div class="grid">
+
+      <!-- YouTube Card -->
+      <div class="plan-card">
+        <div class="card-banner youtube">
+          <span class="purchased-tag">● 500+ PURCHASED</span>
+          <span class="save-tag">SAVE 80%</span>
+          <img class="logo-img" src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube">
+        </div>
+        <div class="card-content">
+          <div class="plan-name">YouTube Premium</div>
+          <div class="plan-desc">Ad-free streaming + YouTube Music</div>
+          <ul class="features-list">
+            <li>✓ Ad-Free & Background Play</li>
+            <li>✓ YT Music Premium Included</li>
+            <li>✓ Offline Downloads Enabled</li>
+          </ul>
+          <div class="badges-row">
+            <span class="micro-badge">⚡ Instant</span>
+            <span class="micro-badge">🛡️ Secure</span>
+            <span class="micro-badge">⭐ 4.9</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">₹70</span>
+            <span class="period">/ 1 month</span>
+          </div>
+          <button class="select-btn" onclick="openCheckout('YouTube Premium', 70, '1 Month')">Buy Now →</button>
+        </div>
       </div>
-      <div class="price">₹70 <span style="font-size: 14px; color: #8e8e93; font-weight: normal;">/ 1 Month</span></div>
-      <ul class="features">
-        <li>✓ Ad-free YouTube & Background Play</li>
-        <li>✓ YouTube Music Premium Included</li>
-        <li>✓ Offline Downloads Enabled</li>
-        <li>✓ Activated on Your Email</li>
-      </ul>
+
+      <!-- Hotstar 4K Card -->
+      <div class="plan-card">
+        <div class="card-banner hotstar">
+          <span class="purchased-tag">● 300+ PURCHASED</span>
+          <span class="save-tag">SAVE 50%</span>
+          <div class="hotstar-logo-text">
+            <span class="hotstar-star">✦</span> JioHotstar <span style="font-weight:400;">4K</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="plan-name">JioHotstar 4K HD Plan</div>
+          <div class="plan-desc">Sports, Movies & Shows streaming in 4K Ultra HD</div>
+          <ul class="features-list">
+            <li>✓ 4K Ultra HD Streaming</li>
+            <li>✓ Live Sports & IPL Access</li>
+            <li>✓ Support Included</li>
+          </ul>
+          <div class="badges-row">
+            <span class="micro-badge">⚡ Instant</span>
+            <span class="micro-badge">🛡️ Secure</span>
+            <span class="micro-badge">⭐ 4.9</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">₹150</span>
+            <span class="mrp">₹299</span>
+            <span class="period">/ 1 month</span>
+          </div>
+          <button class="select-btn" onclick="openCheckout('JioHotstar 4K HD Plan', 150, '1 Month')">Buy Now →</button>
+        </div>
+      </div>
+
+      <!-- Netflix Card -->
+      <div class="plan-card">
+        <div class="card-banner netflix">
+          <span class="purchased-tag">● 988+ PURCHASED</span>
+          <span class="save-tag">SAVE 90%</span>
+          <img class="logo-img" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix">
+        </div>
+        <div class="card-content">
+          <div class="plan-name">Netflix Premium</div>
+          <div class="plan-desc">4K Ultra HD streaming</div>
+          <ul class="features-list">
+            <li>✓ 4K Ultra HD Supported</li>
+            <li>✓ No Logout Issue</li>
+            <li>✓ Full Account Access</li>
+          </ul>
+          <div class="badges-row">
+            <span class="micro-badge">⚡ Instant</span>
+            <span class="micro-badge">🛡️ Secure</span>
+            <span class="micro-badge">⭐ 4.9</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">₹20</span>
+            <span class="mrp">₹649</span>
+            <span class="period">/ month</span>
+          </div>
+          <button class="select-btn" onclick="openCheckout('Netflix Premium', 20, '1 Month')">Buy Now →</button>
+        </div>
+      </div>
+
+      <!-- Hoichoi Card -->
+      <div class="plan-card">
+        <div class="card-banner hoichoi">
+          <span class="save-tag">BEST DEAL</span>
+          <div class="hoichoi-logo-text">hoichoi</div>
+        </div>
+        <div class="card-content">
+          <div class="plan-name">Hoichoi Premium</div>
+          <div class="plan-desc">On-demand video streaming platform for Bengalis</div>
+          <ul class="features-list">
+            <li>✓ Offline Downloads Enabled</li>
+            <li>✓ Watch on All Devices</li>
+            <li>✓ Unlimited Bengali Web Series</li>
+          </ul>
+          <div class="badges-row">
+            <span class="micro-badge">⚡ Instant</span>
+            <span class="micro-badge">🛡️ Secure</span>
+            <span class="micro-badge">⭐ 4.9</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">₹70</span>
+            <span class="period">/ 1 month</span>
+          </div>
+          <button class="select-btn" onclick="openCheckout('Hoichoi Premium', 70, '1 Month')">Buy Now →</button>
+        </div>
+      </div>
+
+      <!-- Spotify Card -->
+      <div class="plan-card">
+        <div class="card-banner spotify">
+          <span class="purchased-tag">● POPULAR</span>
+          <span class="save-tag">SAVE 70%</span>
+          <img class="logo-img" src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify">
+        </div>
+        <div class="card-content">
+          <div class="plan-name">Spotify Premium</div>
+          <div class="plan-desc">Ad-free music streaming & offline playback</div>
+          <ul class="features-list">
+            <li>✓ Ad-free Music</li>
+            <li>✓ Offline Music Downloads</li>
+            <li>✓ High Quality Audio</li>
+          </ul>
+          <div class="badges-row">
+            <span class="micro-badge">⚡ Instant</span>
+            <span class="micro-badge">🛡️ Secure</span>
+            <span class="micro-badge">⭐ 4.9</span>
+          </div>
+          <div class="price-row">
+            <span class="current-price">₹119</span>
+            <span class="mrp">₹357</span>
+            <span class="period">/ 3 months</span>
+          </div>
+          <button class="select-btn" onclick="openCheckout('Spotify Premium', 119, '3 Months')">Buy Now →</button>
+        </div>
+      </div>
+
     </div>
+  </div>
 
-    <form id="orderForm" onsubmit="sendToWhatsApp(event)">
-      <div class="input-group">
-        <label for="name">Your Full Name</label>
-        <input type="text" id="name" placeholder="Enter your name" required>
+  <!-- Checkout & Payment Popup Modal -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-card">
+      <button class="close-btn" onclick="closeCheckout()">✕</button>
+      <div class="modal-header">Complete Payment</div>
+
+      <div class="selected-summary">
+        <div>
+          <strong id="modalPlanName">Plan Name</strong>
+          <div style="font-size:11px; color:#8e8e93;" id="modalPlanPeriod">Period</div>
+        </div>
+        <div style="font-size:18px; font-weight:bold; color:#34c759;" id="modalPlanPrice">₹0</div>
       </div>
 
-      <div class="input-group">
-        <label for="email">YouTube Email ID</label>
-        <input type="email" id="email" placeholder="Email for sub activation" required>
-      </div>
+      <form onsubmit="processOrder(event)">
+        <div class="input-group">
+          <label for="userName">Full Name</label>
+          <input type="text" id="userName" placeholder="Enter your full name" required>
+        </div>
 
-      <div class="qr-container">
-        <!-- Live QR code generated for sastaott.db@slc -->
-        <img id="qrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=sastaott.db@slc&pn=SastaOTT&am=70&cu=INR" alt="Scan to Pay ₹70">
-        <p>Scan & Pay ₹70 via Any UPI App</p>
-        <p style="font-size: 11px; color: #666; font-weight: normal; margin-top: 4px;">UPI ID: sastaott.db@slc</p>
-      </div>
+        <div class="input-group">
+          <label for="userEmail">Account Email ID</label>
+          <input type="email" id="userEmail" placeholder="Email address for subscription" required>
+        </div>
 
-      <button type="submit" class="btn">
-        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338-11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-        Verify Payment on WhatsApp
-      </button>
-    </form>
+        <!-- Dynamic QR Code Payment Section -->
+        <div class="qr-container">
+          <img id="dynamicQR" src="" alt="Payment QR Code">
+          <p>Scan & Pay via Any UPI App</p>
+          <p style="font-size: 11px; color: #666; margin-top: 4px;">UPI ID: sastaott.db@slc</p>
+        </div>
 
-    <div class="note">
-      After paying, click the button to upload your payment screenshot on WhatsApp.
+        <button type="submit" class="wa-btn">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+          Verify Payment on WhatsApp
+        </button>
+      </form>
+      <div class="footer-note">After paying, click above to attach payment screenshot.</div>
     </div>
   </div>
 
   <script>
-    function sendToWhatsApp(event) {
-      event.preventDefault();
+    // ==========================================
+    // 3D WAVING INDIAN FLAG CANVAS ANIMATION
+    // ==========================================
+    const canvas = document.getElementById('flag-canvas');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
 
-      const phone = "919434322612"; // Updated WhatsApp number with country code
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
 
-      const message = `Hi *Sasta OTT*, I have made the payment of ₹70 for the 1-Month YT Premium + Music plan.%0A%0A*Order Details:*%0A• *Name:* ${encodeURIComponent(name)}%0A• *Email:* ${encodeURIComponent(email)}%0A%0AI am attaching my payment screenshot below for verification.`;
+    const geometry = new THREE.PlaneGeometry(8, 4.8, 30, 20);
 
-      const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
+    const flagTextureCanvas = document.createElement('canvas');
+    flagTextureCanvas.width = 600;
+    flagTextureCanvas.height = 360;
+    const ctx = flagTextureCanvas.getContext('2d');
+
+    // Indian Flag Bands
+    ctx.fillStyle = '#FF9933';
+    ctx.fillRect(0, 0, 600, 120);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 120, 600, 120);
+    ctx.fillStyle = '#128807';
+    ctx.fillRect(0, 240, 600, 120);
+
+    // Ashoka Chakra
+    ctx.strokeStyle = '#000080';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(300, 180, 45, 0, Math.PI * 2);
+    ctx.stroke();
+
+    for (let i = 0; i < 24; i++) {
+      const angle = (i * Math.PI) / 12;
+      ctx.beginPath();
+      ctx.moveTo(300, 180);
+      ctx.lineTo(300 + 45 * Math.cos(angle), 180 + 45 * Math.sin(angle));
+      ctx.stroke();
+    }
+
+    const texture = new THREE.CanvasTexture(flagTextureCanvas);
+    const material = new THREE.MeshPhongMaterial({
+      map: texture,
+      side: THREE.DoubleSide,
+      shininess: 60
+    });
+
+    const flagMesh = new THREE.Mesh(geometry, material);
+    scene.add(flagMesh);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight.position.set(5, 5, 5);
+    scene.add(dirLight);
+
+    camera.position.z = 6;
+
+    let clock = new THREE.Clock();
+
+    function animateFlag() {
+      const time = clock.getElapsedTime();
+      const pos = geometry.attributes.position;
+
+      for (let i = 0; i < pos.count; i++) {
+        const u = pos.getX(i);
+        const v = pos.getY(i);
+        const z = Math.sin(u * 1.5 + time * 3) * 0.35 + Math.cos(v * 1.2 + time * 2) * 0.15;
+        pos.setZ(i, z);
+      }
+      pos.needsUpdate = true;
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(animateFlag);
+    }
+    animateFlag();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Auto-hide 3D Intro Screen after 3 seconds
+    setTimeout(() => {
+      const loader = document.getElementById('loader-overlay');
+      loader.style.opacity = '0';
+      loader.style.visibility = 'hidden';
+    }, 3000);
+
+    // ==========================================
+    // STORE CHECKOUT & WHATSAPP FUNCTIONALITY
+    // ==========================================
+    const upiID = "sastaott.db@slc";
+    const waPhone = "919434322612";
+
+    let activePlan = { name: '', price: 0, period: '' };
+
+    function openCheckout(name, price, period) {
+      activePlan = { name, price, period };
+      document.getElementById('modalPlanName').innerText = name;
+      document.getElementById('modalPlanPeriod').innerText = period;
+      document.getElementById('modalPlanPrice').innerText = `₹${price}`;
+      
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=${upiID}&pn=SastaOTT&am=${price}&cu=INR`;
+      document.getElementById('dynamicQR').src = qrUrl;
+
+      document.getElementById('checkoutModal').style.display = 'flex';
+    }
+
+    function closeCheckout() {
+      document.getElementById('checkoutModal').style.display = 'none';
+    }
+
+    function processOrder(e) {
+      e.preventDefault();
+      const name = document.getElementById('userName').value;
+      const email = document.getElementById('userEmail').value;
+
+      const message = `Hi *Sasta OTT*, I have completed the payment of *₹${activePlan.price}* for *${activePlan.name}* (${activePlan.period}).%0A%0A*Order Details:*%0A• *Name:* ${encodeURIComponent(name)}%0A• *Email:* ${encodeURIComponent(email)}%0A%0AI am attaching my payment screenshot below for verification.`;
+
+      const whatsappUrl = `https://wa.me/${waPhone}?text=${message}`;
       window.open(whatsappUrl, '_blank');
     }
   </script>
